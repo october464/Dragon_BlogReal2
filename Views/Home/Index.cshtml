@@ -1,0 +1,90 @@
+﻿@using Dragon_BlogReal.Utilities;
+@model IEnumerable<Dragon_BlogReal.Models.Post>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<!-- Destinations -->
+<section class="pt-5 ">
+    <div class="container">
+        <h1>New Blogs Posts</h1>
+        @*<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis aliquid</p>*@
+    </div>
+    <div class="destinations-slider owl-carousel owl-theme nav-center-custom owl-padding">
+        @foreach (var post in Model)
+        {
+            <a class="destination d-flex align-items-end bg-center bg-cover"
+               asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" style="background-image:url(@ImageHelper.GetImage(post))">
+                <div class="destination-inner w-100 text-center text-white index-forward has-transition">
+                    <h2 class="h3 mb-4">@post.Blog.Name</h2>
+                    <div class="btn btn-primary btn-block destination-btn text-white" style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">@post.Title</div>
+                </div>
+            </a>
+        }
+        
+    </div>
+</section>
+<!-- Top categories section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <header class="mb-5 text-center">
+            <h2>Blogs Categories</h2>
+            <p>The most popular blogs your haven't read yet</p>
+        </header>
+        <div class="row text-center">
+            @foreach (var category in Model.Select(c => c.Blog))
+            {
+                if (category.Name == "Blog")
+                {
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 mb-lg-0 ">
+                        <a class="reset-anchor d-block " asp-controller="Posts" asp-action="Details" asp-route-id="@category.Id">
+                            <svg class="svg-icon mb-3 svg-icon-big svg-icon-light text-primary ">
+                                <use xlink:href="#food-1"> </use>
+                            </svg>
+                            <h3 class="h5">@category.Name</h3>
+                            <p class="text-muted text-small">@category.URL</p>
+                        </a>
+                    </div>
+                }
+                else if (category.Name == "Blog")
+                {
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 mb-lg-0">
+                        <a class="reset-anchor d-block" asp-controller="Posts" asp-action="Details" asp-route-id="@category.Id">
+                            <svg class="svg-icon mb-3 svg-icon-big svg-icon-light text-primary">
+                                <use xlink:href="#paper-bag-1"> </use>
+                            </svg>
+                            <h3 class="h5 mb-1">@category.Name</h3>
+                            <p class="text-muted text-small">@category.URL</p>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 mb-lg-0">
+                        <a class="reset-anchor d-block" asp-controller="Posts" asp-action="Details" asp-route-id="@category.Id">
+                            <svg class="svg-icon mb-3 svg-icon-big svg-icon-light text-primary">
+                                <use xlink:href="#special-price-1"> </use>
+                            </svg>
+                            <h3 class="h5 mb-1">@category.Name</h3>
+                            <p class="text-muted text-small">@category.URL</p>
+                        </a>
+                    </div>
+                }
+                @*else
+                {
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 mb-lg-0">
+                        <a class="reset-anchor d-block" href="listing.html">
+                            <svg class="svg-icon mb-3 svg-icon-big svg-icon-light text-primary">
+                                <use xlink:href="#movie-camera-1"> </use>
+                            </svg>
+                            <h3 class="h5 mb-1">Cinemas</h3>
+                            <p class="text-muted text-small">4 Destinations</p>
+                        </a>
+                    </div>
+                }*@
+            }
+        </div>
+    </div>
+</section>

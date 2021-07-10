@@ -1,0 +1,84 @@
+﻿@using Dragon_BlogReal.Utilities
+@using Dragon_BlogReal.Models
+@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Blog Posts";
+}
+
+<h1>Blog Posts</h1>
+
+<p>
+    <a asp-action="Create">Create Your Own Blog Post</a>
+</p>
+<table class="table display">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Blog)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Abstract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+           
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody style="overflow:hidden">
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @if (item.Image != null)
+                {
+                <img src="@ImageHelper.GetImage(item)" class="img-responsive"  style="max-height:150px" />
+                }
+                else
+                {
+                    <p>No Image Avaliable</p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Blog.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Abstract)
+            </td>
+            <td >
+
+                @Html.Raw(item.Body ) 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+          
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

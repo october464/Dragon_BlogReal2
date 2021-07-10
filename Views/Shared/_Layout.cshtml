@@ -1,0 +1,253 @@
+﻿@using Dragon_BlogReal.Data
+@using Dragon_BlogReal.Helper
+@inject ApplicationDbContext db
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!--New BootStrap CSS-->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!--New Owl Carousel -->
+    <link href="~/Owl.carousel2/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Owl.carousel2/owl.theme.default.min.css" rel="stylesheet" />
+
+    <!-- new Google fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:300,400&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface&amp;display=swap">
+
+    <!-- theme stylesheet-->
+    @*<link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">*@
+    <link href="~/css/style.default.css" rel="stylesheet" />
+
+    <!-- Custom stylesheet - for your changes-->
+    @*<link rel="stylesheet" href="css/custom.css">*@
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/Image/favicon-32x32.png">
+    <!--Table Link-->
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">*@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    
+    <!--Custom CSS-->
+    <link href="~/css/Custom.css" rel="stylesheet" />
+</head>
+<body class="back">
+    <!-- Header-->
+    <header class="header">
+        <!-- Top bar -->
+        <div class="py-2 bg-dark text-white">
+            <div class="container py-1">
+                <div class="row align-items-center">
+                    <div class="col-lg-4">
+                        <ul class="list-inline mb-0 text-small">
+                            <li class="navbar-brand">
+                                <a asp-area="" asp-controller="Home" asp-action="Index">
+                                    Blog Home
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 d-none d-lg-block text-center">
+                        <ul class="list-inline mb-0 small">
+                            <li class="list-inline-item footerIconGrow footerIconGrowHover">
+                                <a class="reset-anchor" target="_blank" href="https://github.com/october464">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item footerIconGrow footerIconGrowHover">
+                                <a class="reset-anchor" target="_blank" href="https://www.linkedin.com/in/jonathan-green-854723164/">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item footerIconGrow footerIconGrowHover">
+                                <a class="reset-anchor" target="_blank" href="https://twitter.com/Jonatha20659564">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 d-none d-lg-block text-right">
+                        <div class="dropdown text-small">
+                            <a class="reset-anchor dropdown-toggle" id=" destinations" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-sign-in-alt mr-2"></i>
+                                Login
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby=" destinations" style="background-color: goldenrod; text-align: center; border-radius: 25px">            
+                                <partial name="_LoginPartial" class="dropdown-item text-small "  />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navbar 1 -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-4">
+            <div class="container text-center">
+                <a class="navbar-brand mx-auto" href="index.html">
+                    <img class="mb-2" src="" alt="" width="140">
+
+                </a>
+            </div>
+        </nav>
+        <!-- Navbar 2 -->
+        <nav class="navbar navbar-expand-lg navbar-light border-gray py-2 bg-light">
+            <div class="container">
+                <button class="navbar-toggler navbar-toggler-right mx-auto border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item px-1">
+                            <!-- Link-->
+                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+                                Home
+                            </a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item px-1">
+                                <!-- Link-->
+                                <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">
+                                    Post Listings
+                                </a>
+                            </li>
+                            <li class="nav-item px-1">
+                                <!-- Link-->
+                                <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">
+                                    Post Category
+                                </a>
+                            </li>
+
+                        }
+                      
+                        @if (User.IsInRole("Moderator"))
+                        {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Comments" asp-action="Index">Moderate Comments</a>
+                            </li>
+                        }
+
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @*<div>
+        <h1>
+            Here is where i am using it...
+        </h1>
+        @foreach (var blog in BlogHelper.GetBlogs(db))
+        {
+            <h2>@blog.Name</h2>
+        }
+    </div>*@
+
+    <!--Footer-->
+    <footer class="bg-dark py-5">
+        <div class="container">
+            <div class="row py-2">
+                <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
+                    <p class="small text-muted text-uppercase mb-0">&copy; Jonathan Green - all rights reserved</p>
+                </div>
+                <div class="col-lg-6 text-center mb-2 mb-lg-0 " >
+                    <ul class="list-inline text-white small mb-0 footerIconGrowHover footerIconGrow">
+                        <li class="list-inline-item">
+                            <a class="reset-anchor" target="_blank" href="https://github.com/october464">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </li>
+                        
+                        <li class="list-inline-item footerIconGrowHover footerIconGrow">
+                            <a class="reset-anchor" target="_blank" href="https://www.linkedin.com/in/jonathan-green-854723164/">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </li>
+                        
+                        <li class="list-inline-item footerIconGrowHover footerIconGrow">
+                            <a class="reset-anchor" target="_blank" href="https://twitter.com/Jonatha20659564">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- JavaScript files-->
+    <script src="~/js/jquery.min.js"></script>
+    @*<script src="vendor/jquery/jquery.min.js"></script>*@
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    @*<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+    <script src="~/js/owl.carousel.min.js"></script>
+    @*<script src="vendor/owl.carousel2/owl.carousel.min.js"></script>*@
+    <script src="~/js/front.js"></script>
+    @*<script src="js/front.js"></script>*@
+
+    <script>
+        // ------------------------------------------------------- //
+        //   Inject SVG Sprite -
+        //   see more here
+        //   https://css-tricks.com/ajaxing-svg-sprite/
+        // ------------------------------------------------------ //
+        function injectSvgSprite(path) {
+
+            var ajax = new XMLHttpRequest();
+            ajax.open("GET", path, true);
+            ajax.send();
+            ajax.onload = function (e) {
+                var div = document.createElement("div");
+                div.className = 'd-none';
+                div.innerHTML = ajax.responseText;
+                document.body.insertBefore(div, document.body.childNodes[0]);
+            }
+        }
+        // this is set to BootstrapTemple website as you cannot
+        // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+        // while using file:// protocol
+        // pls don't forget to change to your domain :)
+        injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
+
+    </script>
+    <!--Tiny Table-->
+    <script src="//cdn.tiny.cloud/1/y2txex64qdxsht3xnqo1ipz8q0pkt81by6f04q67pi2scllo/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+   
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+
+            tinymce.init({
+                selector: '#Body'
+            });
+        @*TinyMCE*@
+
+
+
+
+
+
+    </script>
+
+    @RenderSection("Scripts", required: false)
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</body>
+</html>
